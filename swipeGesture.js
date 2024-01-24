@@ -1,5 +1,47 @@
 var gestureExtension = (function() {
-	console.log("MyGesture extension loaded")
+	console.log("swipeGesture extension start")
+
+	/*
+	<svg xmlns="http://www.w3.org/2000/svg" width="128.001" height="128.001" viewBox="0 0 33.867 33.867">
+	<circle cx="16.933" cy="16.933" r="16.933" fill="#333" />
+	<path d="M17.297 9.024l-7.909 7.909 7.909 7.909 1.632-1.634-5.12-5.12h11.508v-2.31H13.809l5.12-5.12z" fill="#8000d7" />
+	</svg>
+	*/
+
+	// let newDiv = document.body.appendChild((function(){
+	// 	let elm = document.createElement("div")
+	// 	//elm.style.visibility="hidden"
+	// 	elm.style.position="fixed"
+	// 	return elm
+	// })())
+	
+	// let arrowButton = newDiv.appendChild((function(){
+	let arrowButton = document.body.appendChild((function(){
+		let elm = document.createElement("svg")
+		//elm.setAttribute("xmlns", "http://www.w3.org/2000/svg")
+		elm.setAttribute("width", "128.001")
+		elm.setAttribute("height", "128.001")
+		elm.setAttributeNS("", "viewBox", "0 0 33.867 33.867")
+		elm.style.width="100px"
+		elm.style.height="100px"
+		return elm
+	})())
+	arrowButton.appendChild((function(){
+		let elm = document.createElement("circle")
+		elm.setAttribute("cx", "16.933")
+		elm.setAttribute("cy", "16.933")
+		elm.setAttribute("r", "16.933")
+		elm.setAttribute("fill", "#ffffff")
+		return elm
+	})())
+	arrowButton.appendChild((function(){
+		let elm = document.createElement("path")
+		elm.setAttributeNS("", "d", "M17.297 9.024l-7.909 7.909 7.909 7.909 1.632-1.634-5.12-5.12h11.508v-2.31H13.809l5.12-5.12z")
+		elm.setAttribute("fill", "#80007d")
+		return elm
+	})())
+	
+	
 	let touchId = 0
 
 	let backStartAreaX = parseInt(document.documentElement.clientWidth * 0.05)
