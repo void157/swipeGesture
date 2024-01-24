@@ -1,0 +1,17 @@
+{
+
+  "description": "Swiping gesture to page back/forward",
+  "manifest_version": 2,
+  "name": "MyGesture",
+  "version": "1.0",
+  //"homepage_url": "",
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "match_about_blank": true,
+      "js": ["debugging.js"]
+    }
+  ]
+
+}
