@@ -2,40 +2,31 @@ var gestureExtension = (function() {
 	console.log("swipeGesture extension start")
 
 	/*
-	<svg xmlns="http://www.w3.org/2000/svg" width="128.001" height="128.001" viewBox="0 0 33.867 33.867">
-	<circle cx="16.933" cy="16.933" r="16.933" fill="#333" />
-	<path d="M17.297 9.024l-7.909 7.909 7.909 7.909 1.632-1.634-5.12-5.12h11.508v-2.31H13.809l5.12-5.12z" fill="#8000d7" />
+	<svg width="32mm" height="32mm" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+	<circle r="16" cx="16" cy="16" fill="#333"/>
+	<path d="m16.5 8.5-7.5 7.5 7.5 7.5 1.5-1.5-5-5h11v-2h-11l5-5z" fill="#ff0"/>
 	</svg>
 	*/
 
-	// let newDiv = document.body.appendChild((function(){
-	// 	let elm = document.createElement("div")
-	// 	//elm.style.visibility="hidden"
-	// 	elm.style.position="fixed"
-	// 	return elm
-	// })())
-	
-	// let arrowButton = newDiv.appendChild((function(){
 	let arrowButton = document.body.appendChild((function(){
 		let elm = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-		elm.setAttribute("width", "128.001")
-		elm.setAttribute("height", "128.001")
-		elm.setAttributeNS("", "viewBox", "0 0 33.867 33.867")
+		elm.setAttribute("width", "32mm")
+		elm.setAttribute("height", "32mm")
+		elm.setAttributeNS("", "viewBox", "0 0 32 32")
 		elm.style.width="100px"
-		elm.style.height="100px"
 		return elm
 	})())
 	arrowButton.appendChild((function(){
 		let elm = document.createElementNS("http://www.w3.org/2000/svg", "circle")
-		elm.setAttribute("cx", "16.933")
-		elm.setAttribute("cy", "16.933")
-		elm.setAttribute("r", "16.933")
+		elm.setAttribute("cx", "16")
+		elm.setAttribute("cy", "16")
+		elm.setAttribute("r", "16")
 		elm.setAttribute("fill", "#333")
 		return elm
 	})())
 	arrowButton.appendChild((function(){
 		let elm = document.createElementNS("http://www.w3.org/2000/svg", "path")
-		elm.setAttributeNS("", "d", "M17.297 9.024l-7.909 7.909 7.909 7.909 1.632-1.634-5.12-5.12h11.508v-2.31H13.809l5.12-5.12z")
+		elm.setAttributeNS("", "d", "m16.5 8.5-7.5 7.5 7.5 7.5 1.5-1.5-5-5h11v-2h-11l5-5z")
 		elm.setAttribute("fill", "#8000d7")
 		return elm
 	})())
