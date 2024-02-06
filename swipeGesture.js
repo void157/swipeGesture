@@ -17,8 +17,7 @@ var gestureExtension = (function() {
 	
 	// let arrowButton = newDiv.appendChild((function(){
 	let arrowButton = document.body.appendChild((function(){
-		let elm = document.createElement("svg")
-		//elm.setAttribute("xmlns", "http://www.w3.org/2000/svg")
+		let elm = document.createElementNS("http://www.w3.org/2000/svg", "svg")
 		elm.setAttribute("width", "128.001")
 		elm.setAttribute("height", "128.001")
 		elm.setAttributeNS("", "viewBox", "0 0 33.867 33.867")
@@ -27,17 +26,17 @@ var gestureExtension = (function() {
 		return elm
 	})())
 	arrowButton.appendChild((function(){
-		let elm = document.createElement("circle")
+		let elm = document.createElementNS("http://www.w3.org/2000/svg", "circle")
 		elm.setAttribute("cx", "16.933")
 		elm.setAttribute("cy", "16.933")
 		elm.setAttribute("r", "16.933")
-		elm.setAttribute("fill", "#ffffff")
+		elm.setAttribute("fill", "#333")
 		return elm
 	})())
 	arrowButton.appendChild((function(){
-		let elm = document.createElement("path")
+		let elm = document.createElement("http://www.w3.org/2000/svg", "path")
 		elm.setAttributeNS("", "d", "M17.297 9.024l-7.909 7.909 7.909 7.909 1.632-1.634-5.12-5.12h11.508v-2.31H13.809l5.12-5.12z")
-		elm.setAttribute("fill", "#80007d")
+		elm.setAttribute("fill", "#8000d7")
 		return elm
 	})())
 	
