@@ -34,7 +34,7 @@ var gestureExtension = (function() {
 		return elm
 	})())
 	arrowButton.appendChild((function(){
-		let elm = document.createElement("http://www.w3.org/2000/svg", "path")
+		let elm = document.createElementNS("http://www.w3.org/2000/svg", "path")
 		elm.setAttributeNS("", "d", "M17.297 9.024l-7.909 7.909 7.909 7.909 1.632-1.634-5.12-5.12h11.508v-2.31H13.809l5.12-5.12z")
 		elm.setAttribute("fill", "#8000d7")
 		return elm
