@@ -51,11 +51,15 @@ var gestureExtension = (function() {
 	function touchStart(evt) {
 		if (evt.touches[0].clientX < backStartAreaX) {
 			swipingBack = true
+			arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
+			arrowButton.style.transform = "scaleX(1)"
 			arrowButton.style.display = ""
 		};
 
 		if (evt.touches[0].clientX > forwardStartAreaX) {
 			swipingForward = true
+			arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
+			arrowButton.style.transform = "scaleX(-1)"
 			arrowButton.style.display = ""
 		};
 	}
@@ -81,10 +85,10 @@ var gestureExtension = (function() {
 				*/
 				if (evt.changedTouches[0].screenX < forwardEndAreaX) {
 					arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#80e")
-					swipedBackEnough = true
+					swipedForwardEnough = true
 				} else {
 					arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
-					swipedBackEnough = false
+					swipedForwardEnough = false
 				}
 			}
 		}
@@ -106,7 +110,7 @@ var gestureExtension = (function() {
 				swipingForward = false
 				arrowButton.style.display = "none"
 				if (swipedForwardEnough) {
-					swipedBackEnough = false
+					swipedForwardEnough = false
 					// history.forward()
 					console.log("fore")
 				}
