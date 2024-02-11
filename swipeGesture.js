@@ -13,7 +13,9 @@ var gestureExtension = (function() {
 		elm.setAttribute("width", "32mm")
 		elm.setAttribute("height", "32mm")
 		elm.setAttributeNS("", "viewBox", "0 0 32 32")
-		elm.style.width="100px"
+		elm.style.width = "100px"
+		elm.style.height = "auto"
+		elm.style.display = "none"
 		return elm
 	})())
 	arrowButton.appendChild((function(){
@@ -49,10 +51,12 @@ var gestureExtension = (function() {
 	function touchStart(evt) {
 		if (evt.touches[0].clientX < backStartAreaX) {
 			swipingBack = true
+			arrowButton.style.display = ""
 		};
 
 		if (evt.touches[0].clientX > forwardStartAreaX) {
 			swipingForward = true
+			arrowButton.style.display = ""
 		};
 	}
 
@@ -63,16 +67,10 @@ var gestureExtension = (function() {
 					move arrow icon x=(evt.touches[0].screenX)
 				*/
 				if (evt.changedTouches[0].screenX > backEndAreaX) {
-					/*
-						change arrow icon color
-					*/
-					document.body.style.border = "216px solid blue";
+					arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#80e")
 					swipedBackEnough = true
 				} else {
-					/*
-						change arrow icon color
-					*/
-					document.body.style.border = "";
+					arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
 					swipedBackEnough = false
 				}
 			}
@@ -82,27 +80,21 @@ var gestureExtension = (function() {
 				move arrow icon x=(evt.touches[0].screenX)
 				*/
 				if (evt.changedTouches[0].screenX < forwardEndAreaX) {
-					/*
-						change arrow icon color
-					*/
-					document.body.style.border = "216px solid red";
+					arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#80e")
 					swipedBackEnough = true
 				} else {
-					/*
-						change arrow icon color
-					*/
+					arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
 					swipedBackEnough = false
-					document.body.style.border = "";
 				}
 			}
 		}
 	}
 
 	function touchEnd(evt) {
-		document.body.style.border = "";
 		if (swipingBack) {
 			if (evt.changedTouches[0].identifier == touchId) {
 				swipingBack = false
+				arrowButton.style.display = "none"
 				if (swipedBackEnough) {
 					swipedBackEnough = false
 					// history.back()
@@ -112,6 +104,7 @@ var gestureExtension = (function() {
 		} else if (swipingForward) {
 			if (evt.changedTouches[0].identifier == touchId) {
 				swipingForward = false
+				arrowButton.style.display = "none"
 				if (swipedForwardEnough) {
 					swipedBackEnough = false
 					// history.forward()
@@ -125,9 +118,9 @@ var gestureExtension = (function() {
 	addEventListener("touchmove", touchMove)
 	addEventListener("touchend", touchEnd)
 
-	return {
-		show: function() {
-			console.log("left :", swipingBack, "\nright:", swipingForward)
-		}
-	}
+	// return {
+	// 	show: function() {
+	// 		console.log("left :", swipingBack, "\nright:", swipingForward)
+	// 	}
+	// }
 })();
