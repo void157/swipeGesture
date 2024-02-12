@@ -13,9 +13,12 @@ var gestureExtension = (function() {
 		elm.setAttribute("width", "32mm")
 		elm.setAttribute("height", "32mm")
 		elm.setAttributeNS("", "viewBox", "0 0 32 32")
-		elm.style.width = "100px"
+		elm.style.width = "35px"
 		elm.style.height = "auto"
 		elm.style.display = "none"
+		elm.style.position = "fixed"
+		elm.style.top = "50%"
+		elm.style.left = "0px"
 		return elm
 	})())
 	arrowButton.appendChild((function(){
