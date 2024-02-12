@@ -1,6 +1,8 @@
 var gestureExtension = (function() {
 	console.log("swipeGesture extension start")
 
+	let buttonSize = 35
+
 	/*
 	<svg width="32mm" height="32mm" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
 	<circle r="16" cx="16" cy="16" fill="#333"/>
@@ -13,12 +15,13 @@ var gestureExtension = (function() {
 		elm.setAttribute("width", "32mm")
 		elm.setAttribute("height", "32mm")
 		elm.setAttributeNS("", "viewBox", "0 0 32 32")
-		elm.style.width = "35px"
+		elm.style.width = String(buttonSize) + "px"
 		elm.style.height = "auto"
 		elm.style.display = "none"
 		elm.style.position = "fixed"
 		elm.style.top = "50%"
 		elm.style.left = "0px"
+		elm.style.scale = 1
 		return elm
 	})())
 	arrowButton.appendChild((function(){
@@ -39,11 +42,15 @@ var gestureExtension = (function() {
 	
 	let touchId = 0
 
-	let backStartAreaX = parseInt(document.documentElement.clientWidth * 0.05)
-	let forwardStartAreaX = document.documentElement.clientWidth - backStartAreaX
+	let maxWidth = document.documentElement.clientWidth
 
-	let backEndAreaX = parseInt(document.documentElement.clientWidth * 0.25)
-	let forwardEndAreaX = document.documentElement.clientWidth - backEndAreaX
+	let backStartAreaX = parseInt(maxWidth * 0.05)
+	let forwardStartAreaX = maxWidth - backStartAreaX
+
+	let backEndAreaX = parseInt(maxWidth * 0.25)
+	let forwardEndAreaX = maxWidth - backEndAreaX
+
+	var pinchRatio = 1
 
 	var swipingBack = false
 	var swipingForward = false
@@ -54,14 +61,19 @@ var gestureExtension = (function() {
 	function touchStart(evt) {
 		if (evt.touches[0].clientX < backStartAreaX) {
 			swipingBack = true
+			pinchRatio = evt.touches[0].clientX / evt.touches[0].screenX
+			// console.log(pinchRatio)
 			arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
+			arrowButton.style.width = String(buttonSize * pinchRatio) + "px"
 			arrowButton.style.transform = "scaleX(1)"
 			arrowButton.style.display = ""
 		};
 
 		if (evt.touches[0].clientX > forwardStartAreaX) {
 			swipingForward = true
+			pinchRatio = (maxWidth - evt.touches[0].clientX) / (maxWidth - evt.touches[0].screenX)
 			arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
+			arrowButton.style.width = String(buttonSize * pinchRatio) + "px"
 			arrowButton.style.transform = "scaleX(-1)"
 			arrowButton.style.display = ""
 		};
