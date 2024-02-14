@@ -1,7 +1,7 @@
 var gestureExtension = (function() {
 	console.log("swipeGesture extension start")
 
-	let buttonSize = 35
+	const buttonSize = 35
 
 	/*
 	<svg width="32mm" height="32mm" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -10,7 +10,7 @@ var gestureExtension = (function() {
 	</svg>
 	*/
 
-	let arrowButton = document.body.appendChild((function(){
+	const arrowButton = document.body.appendChild((function(){
 		let elm = document.createElementNS("http://www.w3.org/2000/svg", "svg")
 		elm.setAttribute("width", "32mm")
 		elm.setAttribute("height", "32mm")
@@ -40,23 +40,23 @@ var gestureExtension = (function() {
 	})())
 	
 	
-	let touchId = 0
+	const touchId = 0
 
-	let maxWidth = document.documentElement.clientWidth
+	const maxWidth = document.documentElement.clientWidth
 
-	let backStartAreaX = parseInt(maxWidth * 0.05)
-	let forwardStartAreaX = maxWidth - backStartAreaX
+	const backStartAreaX = parseInt(maxWidth * 0.05)
+	const forwardStartAreaX = maxWidth - backStartAreaX
 
-	let backEndAreaX = parseInt(maxWidth * 0.25)
-	let forwardEndAreaX = maxWidth - backEndAreaX
+	const backEndAreaX = parseInt(maxWidth * 0.25)
+	const forwardEndAreaX = maxWidth - backEndAreaX
 
-	var pinchRatio = 1
+	let pinchRatio = 1
 
-	var swipingBack = false
-	var swipingForward = false
+	let swipingBack = false
+	let swipingForward = false
 	
-	var swipedBackEnough = false
-	var swipedForwardEnough = false
+	let swipedBackEnough = false
+	let swipedForwardEnough = false
 
 	function touchStart(evt) {
 		if (evt.touches[0].clientX < backStartAreaX) {
