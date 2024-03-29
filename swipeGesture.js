@@ -56,6 +56,8 @@ var gestureExtension = (function() {
 	let swipedBackEnough = false
 	let swipedForwardEnough = false
 
+	let ticking = false
+
 	function touchStart(evt) {
 		if (evt.touches[0].clientX < backStartAreaX) {
 			pinchRatio = evt.touches[0].clientX / evt.touches[0].screenX
@@ -67,7 +69,7 @@ var gestureExtension = (function() {
 
 			addEventListener("touchmove", touchMoveBack, {passive: false})
 			addEventListener("touchend", touchEndBack)
-		};
+		}
 
 		if (evt.touches[0].clientX > forwardStartAreaX) {
 			swipingForward = true
@@ -79,46 +81,58 @@ var gestureExtension = (function() {
 
 			addEventListener("touchmove", touchMoveForward, {passive: false})
 			addEventListener("touchend", touchEndForward)
-		};
+		}
 	}
 
 	function touchMoveBack(evt) {
-		if (evt.changedTouches[0].identifier == touchId) {
-			// evt.preventDefault()
-			/*
-				move arrow icon x=(evt.touches[0].screenX)
-			*/
+		if (!ticking) {
+			setTimeout(() => {
+				if (evt.changedTouches[0].identifier == touchId) {
+					// evt.preventDefault()
+					/*
+						move arrow icon x=(evt.touches[0].screenX)
+					*/
 
-			pinchRatio = evt.touches[0].clientX / evt.touches[0].screenX
-			arrowButton.style.width = String(buttonSize * pinchRatio) + "px"
+					pinchRatio = evt.touches[0].clientX / evt.touches[0].screenX
+					arrowButton.style.width = String(buttonSize * pinchRatio) + "px"
 
-			if (evt.changedTouches[0].screenX > backEndAreaX) {
-				arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#80e")
-				swipedBackEnough = true
-			} else {
-				arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
-				swipedBackEnough = false
-			}
+					if (evt.changedTouches[0].screenX > backEndAreaX) {
+						arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#80e")
+						swipedBackEnough = true
+					} else {
+						arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
+						swipedBackEnough = false
+					}
+				}
+				ticking = false
+			}, 64)
+			ticking = true
 		}
 	}
 	
 	function touchMoveForward(evt) {
-		if (evt.changedTouches[0].identifier == touchId) {
-			// evt.preventDefault()
-			/*
-			move arrow icon x=(evt.touches[0].screenX)
-			*/
+		if (!ticking) {
+			setTimeout(() => {
+				if (evt.changedTouches[0].identifier == touchId) {
+					// evt.preventDefault()
+					/*
+					move arrow icon x=(evt.touches[0].screenX)
+					*/
 
-			pinchRatio = (maxWidth - evt.touches[0].clientX) / (maxWidth - evt.touches[0].screenX)
-			arrowButton.style.width = String(buttonSize * pinchRatio) + "px"
-			
-			if (evt.changedTouches[0].screenX < forwardEndAreaX) {
-				arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#80e")
-				swipedForwardEnough = true
-			} else {
-				arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
-				swipedForwardEnough = false
-			}
+					pinchRatio = (maxWidth - evt.touches[0].clientX) / (maxWidth - evt.touches[0].screenX)
+					arrowButton.style.width = String(buttonSize * pinchRatio) + "px"
+					
+					if (evt.changedTouches[0].screenX < forwardEndAreaX) {
+						arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#80e")
+						swipedForwardEnough = true
+					} else {
+						arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
+						swipedForwardEnough = false
+					}
+				}
+				ticking = false
+			}, 64)
+			ticking = true
 		}
 	}
 
@@ -150,4 +164,4 @@ var gestureExtension = (function() {
 
 	addEventListener("touchstart", touchStart)
 
-})();
+})()
