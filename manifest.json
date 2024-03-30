@@ -1,10 +1,10 @@
 {
 
-  "description": "Swiping gesture to page back/forward",
+  "description": "Swiping gestures to move page back/forward",
   "manifest_version": 2,
-  "name": "MyGesture",
-  "version": "0.1",
-  //"homepage_url": "",
+  "name": "swipeGesture",
+  "version": "1.0",
+  "homepage_url": "https://github.com/void157/swipeGesture",
 
   "content_scripts": [
     {

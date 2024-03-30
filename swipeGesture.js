@@ -3,7 +3,7 @@ var gestureExtension = (() => {
 
 	const maxWidth = document.documentElement.clientWidth
 	const iconSize = parseInt(maxWidth * 0.08)
-
+	const defaultIconTop = (document.documentElement.clientHeight - iconSize) * 0.5
 	const backStartAreaX = parseInt(maxWidth * 0.05)
 	const forwardStartAreaX = maxWidth - backStartAreaX
 
@@ -25,6 +25,7 @@ var gestureExtension = (() => {
 		elm.style.width = String(iconSize) + "px"
 		elm.style.height = "auto"
 		elm.style.position = "fixed"
+		elm.style.zIndex = "2147483647"
 		elm.style.top = "50%"
 		elm.style.left = "0px"
 		elm.style.scale = 1
@@ -53,7 +54,7 @@ var gestureExtension = (() => {
 	let swipedBackEnough = false
 	let swipedForwardEnough = false
 
-	let ticking = false
+	// let ticking = false
 
 	function convertCurve(x) {
 		if (x <= 1) {
@@ -67,23 +68,16 @@ var gestureExtension = (() => {
 
 	function touchStart(evt) {
 		if (evt.touches[0].clientX < backStartAreaX) {
-			// pinchRatio = evt.touches[0].clientX / evt.touches[0].screenX
-			// console.log(pinchRatio)
-			// arrowIcon.style.width = String(iconSize * pinchRatio) + "px"
 			arrowSign.setAttribute("fill", "#fff")
 			arrowIcon.style.transform = "scaleX(1)"
-			//arrowIcon.style.display = ""
 
 			addEventListener("touchmove", touchMoveBack, {passive: false})
 			addEventListener("touchend", touchEndBack)
 		}
 
 		if (evt.touches[0].clientX > forwardStartAreaX) {
-			// pinchRatio = (maxWidth - evt.touches[0].clientX) / (maxWidth - evt.touches[0].screenX)
-			// arrowIcon.style.width = String(iconSize * pinchRatio) + "px"
 			arrowSign.setAttribute("fill", "#fff")
 			arrowIcon.style.transform = "scaleX(-1)"
-			//arrowIcon.style.display = ""
 
 			addEventListener("touchmove", touchMoveForward, {passive: false})
 			addEventListener("touchend", touchEndForward)
@@ -93,41 +87,59 @@ var gestureExtension = (() => {
 	function touchMoveBack(evt) {
 		if (evt.changedTouches[0].identifier == 0) {
 			evt.preventDefault()
-			if (evt.touches[0].screenX < iconSize) {
-				pinchRatio = evt.touches[0].clientX / evt.touches[0].screenX
+			touch = evt.touches[0]
+			if (touch.screenX < iconSize) {
+				arrowIcon.style.display = "none"
+				pinchRatio = touch.clientX / touch.screenX
 				arrowIcon.style.width = String(iconSize * pinchRatio) + "px"
+				arrowIcon.style.top = String(touch.clientY + (defaultIconTop - touch.screenY) * pinchRatio) + "px"
 			} else {
-				arrowIcon.style.left = String((convertCurve(evt.touches[0].screenX / iconSize) - 1) * iconSize * pinchRatio) + "px"	//値が0付近のため*pinchRatio不要
-				arrowIcon.style.display = ""
-
-				if (evt.changedTouches[0].screenX > backEndAreaX) {
-					arrowSign.setAttribute("fill", "#80e")
-					swipedBackEnough = true
-				} else {
+				if (evt.changedTouches[0].screenX < backEndAreaX) {
+					arrowIcon.style.left = String((convertCurve(touch.screenX / iconSize) - 1) * iconSize * pinchRatio) + "px"	//値が0付近のため*pinchRatio不要
+					arrowIcon.style.display = ""
 					arrowSign.setAttribute("fill", "#fff")
 					swipedBackEnough = false
+				} else {
+					arrowSign.setAttribute("fill", "#80e")
+					swipedBackEnough = true
 				}
 			}
 			
 		}
 	}
+
+	/*
+	function touchMoveBack(evt) {
+		if (!ticking) {
+			window.requestAnimationFrame(() => {
+					...
+				}
+				ticking=false
+			})
+			ticking = true
+		}
+	}
+	*/
+
 	
 	function touchMoveForward(evt) {
 		if (evt.changedTouches[0].identifier == 0) {
 			evt.preventDefault()
-			if (maxWidth - iconSize < evt.touches[0].screenX) {
-				pinchRatio = (maxWidth - evt.touches[0].clientX) / (maxWidth - evt.touches[0].screenX)
+			touch = evt.touches[0]
+			if (maxWidth - iconSize < touch.screenX) {
+				arrowIcon.style.display = "none"
+				pinchRatio = (maxWidth - touch.clientX) / (maxWidth - touch.screenX)
 				arrowIcon.style.width = String(iconSize * pinchRatio) + "px"
+				arrowIcon.style.top = String(touch.clientY + (defaultIconTop - touch.screenY) * pinchRatio) + "px"
 			} else {
-				arrowIcon.style.left = String(maxWidth - convertCurve((maxWidth - evt.touches[0].screenX) / iconSize) * iconSize * pinchRatio) + "px"
-				arrowIcon.style.display = ""
-				
-				if (evt.changedTouches[0].screenX < forwardEndAreaX) {
-					arrowSign.setAttribute("fill", "#80e")
-					swipedForwardEnough = true
-				} else {
+				if (evt.changedTouches[0].screenX > forwardEndAreaX) {
+					arrowIcon.style.left = String(maxWidth - convertCurve((maxWidth - touch.screenX) / iconSize) * iconSize * pinchRatio) + "px"
+					arrowIcon.style.display = ""
 					arrowSign.setAttribute("fill", "#fff")
 					swipedForwardEnough = false
+				} else {
+					arrowSign.setAttribute("fill", "#80e")
+					swipedForwardEnough = true
 				}
 			}
 		}
@@ -138,8 +150,8 @@ var gestureExtension = (() => {
 			arrowIcon.style.display = "none"
 			if (swipedBackEnough) {
 				swipedBackEnough = false
-				// history.back()
-				console.log("back")
+				history.back()
+				// console.log("back")
 			}
 			removeEventListener("touchmove", touchMoveBack, {passive: false})
 			removeEventListener("touchend", touchEndBack)
@@ -151,8 +163,8 @@ var gestureExtension = (() => {
 			arrowIcon.style.display = "none"
 			if (swipedForwardEnough) {
 				swipedForwardEnough = false
-				// history.forward()
-				console.log("fore")
+				history.forward()
+				// console.log("fore")
 			}
 			removeEventListener("touchmove", touchMoveForward, {passive: false})
 			removeEventListener("touchend", touchEndForward)
