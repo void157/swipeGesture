@@ -97,7 +97,7 @@ var gestureExtension = (() => {
 				pinchRatio = evt.touches[0].clientX / evt.touches[0].screenX
 				arrowIcon.style.width = String(iconSize * pinchRatio) + "px"
 			} else {
-				arrowIcon.style.left = String((convertCurve(evt.touches[0].screenX / iconSize) - 1) * iconSize) + "px"
+				arrowIcon.style.left = String((convertCurve(evt.touches[0].screenX / iconSize) - 1) * iconSize * pinchRatio) + "px"	//値が0付近のため*pinchRatio不要
 				arrowIcon.style.display = ""
 
 				if (evt.changedTouches[0].screenX > backEndAreaX) {
@@ -115,11 +115,11 @@ var gestureExtension = (() => {
 	function touchMoveForward(evt) {
 		if (evt.changedTouches[0].identifier == 0) {
 			evt.preventDefault()
-			if (maxWidth - evt.touches[0].screenX < iconSize) {
+			if (maxWidth - iconSize < evt.touches[0].screenX) {
 				pinchRatio = (maxWidth - evt.touches[0].clientX) / (maxWidth - evt.touches[0].screenX)
 				arrowIcon.style.width = String(iconSize * pinchRatio) + "px"
 			} else {
-				arrowIcon.style.left = String(maxWidth - convertCurve((maxWidth - evt.touches[0].screenX) / iconSize) * iconSize) + "px"
+				arrowIcon.style.left = String(maxWidth - convertCurve((maxWidth - evt.touches[0].screenX) / iconSize) * iconSize * pinchRatio) + "px"
 				arrowIcon.style.display = ""
 				
 				if (evt.changedTouches[0].screenX < forwardEndAreaX) {
