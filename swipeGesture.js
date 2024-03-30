@@ -10,7 +10,7 @@ var gestureExtension = (function() {
 	</svg>
 	*/
 
-	const arrowButton = document.body.appendChild((function(){
+	const arrowIcon = document.body.appendChild((function(){
 		let elm = document.createElementNS("http://www.w3.org/2000/svg", "svg")
 		elm.setAttribute("width", "32mm")
 		elm.setAttribute("height", "32mm")
@@ -24,7 +24,7 @@ var gestureExtension = (function() {
 		elm.style.scale = 1
 		return elm
 	})())
-	arrowButton.appendChild((function(){
+	arrowIcon.appendChild((function(){
 		let elm = document.createElementNS("http://www.w3.org/2000/svg", "circle")
 		elm.setAttribute("cx", "16")
 		elm.setAttribute("cy", "16")
@@ -32,15 +32,13 @@ var gestureExtension = (function() {
 		elm.setAttribute("fill", "#333")
 		return elm
 	})())
-	arrowButton.appendChild((function(){
+	const arrowSign = arrowIcon.appendChild((function(){
 		let elm = document.createElementNS("http://www.w3.org/2000/svg", "path")
 		elm.setAttributeNS("", "d", "m16.5 8.5-7.5 7.5 7.5 7.5 1.5-1.5-5-5h11v-2h-11l5-5z")
 		elm.setAttribute("fill", "#80e")
 		return elm
 	})())
-	
-	
-	const touchId = 0
+
 
 	const maxWidth = document.documentElement.clientWidth
 
@@ -58,14 +56,24 @@ var gestureExtension = (function() {
 
 	let ticking = false
 
+	function convertCurve(x) {
+		if (x <= 1) {
+			return x - 1
+		} else if ((1 < x) && (x < 3)) {
+			return -0.25*(x-3)**2 + 1
+		} else {
+			return 1
+		}
+	}
+
 	function touchStart(evt) {
 		if (evt.touches[0].clientX < backStartAreaX) {
 			pinchRatio = evt.touches[0].clientX / evt.touches[0].screenX
 			// console.log(pinchRatio)
-			arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
-			arrowButton.style.width = String(buttonSize * pinchRatio) + "px"
-			arrowButton.style.transform = "scaleX(1)"
-			arrowButton.style.display = ""
+			arrowSign.setAttribute("fill", "#fff")
+			arrowIcon.style.width = String(buttonSize * pinchRatio) + "px"
+			arrowIcon.style.transform = "scaleX(1)"
+			arrowIcon.style.display = ""
 
 			addEventListener("touchmove", touchMoveBack, {passive: false})
 			addEventListener("touchend", touchEndBack)
@@ -74,10 +82,10 @@ var gestureExtension = (function() {
 		if (evt.touches[0].clientX > forwardStartAreaX) {
 			swipingForward = true
 			pinchRatio = (maxWidth - evt.touches[0].clientX) / (maxWidth - evt.touches[0].screenX)
-			arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
-			arrowButton.style.width = String(buttonSize * pinchRatio) + "px"
-			arrowButton.style.transform = "scaleX(-1)"
-			arrowButton.style.display = ""
+			arrowSign.setAttribute("fill", "#fff")
+			arrowIcon.style.width = String(buttonSize * pinchRatio) + "px"
+			arrowIcon.style.transform = "scaleX(-1)"
+			arrowIcon.style.display = ""
 
 			addEventListener("touchmove", touchMoveForward, {passive: false})
 			addEventListener("touchend", touchEndForward)
@@ -87,20 +95,18 @@ var gestureExtension = (function() {
 	function touchMoveBack(evt) {
 		if (!ticking) {
 			setTimeout(() => {
-				if (evt.changedTouches[0].identifier == touchId) {
+				if (evt.changedTouches[0].identifier == 0) {
 					// evt.preventDefault()
-					/*
-						move arrow icon x=(evt.touches[0].screenX)
-					*/
+					convertCurve(evt.touches[0])
 
 					pinchRatio = evt.touches[0].clientX / evt.touches[0].screenX
-					arrowButton.style.width = String(buttonSize * pinchRatio) + "px"
+					arrowIcon.style.width = String(buttonSize * pinchRatio) + "px"
 
 					if (evt.changedTouches[0].screenX > backEndAreaX) {
-						arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#80e")
+						arrowSign.setAttribute("fill", "#80e")
 						swipedBackEnough = true
 					} else {
-						arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
+						arrowSign.setAttribute("fill", "#fff")
 						swipedBackEnough = false
 					}
 				}
@@ -113,20 +119,20 @@ var gestureExtension = (function() {
 	function touchMoveForward(evt) {
 		if (!ticking) {
 			setTimeout(() => {
-				if (evt.changedTouches[0].identifier == touchId) {
+				if (evt.changedTouches[0].identifier == 0) {
 					// evt.preventDefault()
 					/*
 					move arrow icon x=(evt.touches[0].screenX)
 					*/
 
 					pinchRatio = (maxWidth - evt.touches[0].clientX) / (maxWidth - evt.touches[0].screenX)
-					arrowButton.style.width = String(buttonSize * pinchRatio) + "px"
+					arrowIcon.style.width = String(buttonSize * pinchRatio) + "px"
 					
 					if (evt.changedTouches[0].screenX < forwardEndAreaX) {
-						arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#80e")
+						arrowSign.setAttribute("fill", "#80e")
 						swipedForwardEnough = true
 					} else {
-						arrowButton.getElementsByTagName("path")[0].setAttribute("fill", "#fff")
+						arrowSign.setAttribute("fill", "#fff")
 						swipedForwardEnough = false
 					}
 				}
@@ -137,8 +143,8 @@ var gestureExtension = (function() {
 	}
 
 	function touchEndBack(evt) {
-		if (evt.changedTouches[0].identifier == touchId) {
-			arrowButton.style.display = "none"
+		if (evt.changedTouches[0].identifier == 0) {
+			arrowIcon.style.display = "none"
 			if (swipedBackEnough) {
 				swipedBackEnough = false
 				// history.back()
@@ -150,8 +156,8 @@ var gestureExtension = (function() {
 	}
 
 	function touchEndForward(evt) {
-		if (evt.changedTouches[0].identifier == touchId) {
-			arrowButton.style.display = "none"
+		if (evt.changedTouches[0].identifier == 0) {
+			arrowIcon.style.display = "none"
 			if (swipedForwardEnough) {
 				swipedForwardEnough = false
 				// history.forward()
