@@ -3,7 +3,7 @@
   "description": "Swiping gestures to move page back/forward",
   "manifest_version": 2,
   "name": "swipeGesture",
-  "version": "1.0",
+  "version": "1.1",
   "homepage_url": "https://github.com/void157/swipeGesture",
 
   "content_scripts": [

@@ -17,36 +17,16 @@ var gestureExtension = (() => {
 	</svg>
 	*/
 
-	const arrowIcon = document.body.appendChild((function(){
-		let elm = document.createElementNS("http://www.w3.org/2000/svg", "svg")
-		elm.setAttribute("width", "32mm")
-		elm.setAttribute("height", "32mm")
-		elm.setAttributeNS("", "viewBox", "0 0 32 32")
-		elm.style.width = String(iconSize) + "px"
-		elm.style.height = "auto"
-		elm.style.position = "fixed"
-		elm.style.zIndex = "2147483647"
-		elm.style.top = "50%"
-		elm.style.left = "0px"
-		elm.style.scale = 1
-		elm.style.display = "none"
-		return elm
-	})())
-	arrowIcon.appendChild((function(){
-		let elm = document.createElementNS("http://www.w3.org/2000/svg", "circle")
-		elm.setAttribute("cx", "16")
-		elm.setAttribute("cy", "16")
-		elm.setAttribute("r", "16")
-		elm.setAttribute("fill", "#333")
-		return elm
-	})())
-	const arrowSign = arrowIcon.appendChild((function(){
-		let elm = document.createElementNS("http://www.w3.org/2000/svg", "path")
-		elm.setAttributeNS("", "d", "m16.5 8.5-7.5 7.5 7.5 7.5 1.5-1.5-5-5h11v-2h-11l5-5z")
-		elm.setAttribute("fill", "#80e")
-		return elm
-	})())
-
+	const purple = browser.runtime.getURL('arrow_p.png');;
+	const white = browser.runtime.getURL('arrow_w.png');;
+	
+	const arrowIcon = document.createElement('img');
+	arrowIcon.style.position = "fixed"
+	arrowIcon.style.top = "50%"
+	arrowIcon.style.width = "34px"
+	arrowIcon.style.display = "none"
+	arrowIcon.src = white
+	document.body.appendChild(arrowIcon);
 
 	let pinchRatio = 1
 
@@ -68,7 +48,7 @@ var gestureExtension = (() => {
 
 	function touchStart(evt) {
 		if (evt.touches[0].clientX < backStartAreaX) {
-			arrowSign.setAttribute("fill", "#fff")
+			arrowIcon.src = white
 			arrowIcon.style.transform = "scaleX(1)"
 
 			addEventListener("touchmove", touchMoveBack, {passive: false})
@@ -76,7 +56,7 @@ var gestureExtension = (() => {
 		}
 
 		if (evt.touches[0].clientX > forwardStartAreaX) {
-			arrowSign.setAttribute("fill", "#fff")
+			arrowIcon.src = white
 			arrowIcon.style.transform = "scaleX(-1)"
 
 			addEventListener("touchmove", touchMoveForward, {passive: false})
@@ -97,10 +77,10 @@ var gestureExtension = (() => {
 				if (evt.changedTouches[0].screenX < backEndAreaX) {
 					arrowIcon.style.left = String((convertCurve(touch.screenX / iconSize) - 1) * iconSize * pinchRatio) + "px"	//値が0付近のため*pinchRatio不要
 					arrowIcon.style.display = ""
-					arrowSign.setAttribute("fill", "#fff")
+					arrowIcon.src = white
 					swipedBackEnough = false
 				} else {
-					arrowSign.setAttribute("fill", "#80e")
+					arrowIcon.src = purple
 					swipedBackEnough = true
 				}
 			}
@@ -135,10 +115,10 @@ var gestureExtension = (() => {
 				if (evt.changedTouches[0].screenX > forwardEndAreaX) {
 					arrowIcon.style.left = String(maxWidth - convertCurve((maxWidth - touch.screenX) / iconSize) * iconSize * pinchRatio) + "px"
 					arrowIcon.style.display = ""
-					arrowSign.setAttribute("fill", "#fff")
+					arrowIcon.src = white
 					swipedForwardEnough = false
 				} else {
-					arrowSign.setAttribute("fill", "#80e")
+					arrowIcon.src = purple
 					swipedForwardEnough = true
 				}
 			}
