@@ -1,5 +1,12 @@
+/* (c) 2024 void157
+
+	This Source Code Form is subject to the terms of the Mozilla Public License, v.2.0.
+	If a copy of the MPL was not distributed with this file, You can obtain one at
+	http://mozilla.org/MPL/2.0/.
+*/
+
 var gestureExtension = (() => {
-	console.log("swipeGesture extension start")
+	// console.log("swipeGesture extension start")
 
 	const maxWidth = document.documentElement.clientWidth
 	const iconSize = parseInt(maxWidth * 0.08)
