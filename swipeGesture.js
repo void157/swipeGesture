@@ -54,7 +54,7 @@ var gestureExtension = (() => {
 	}
 
 	function touchStart(evt) {
-		if (evt.touches[0].clientX < backStartAreaX) {
+		if ((evt.touches[0].screenX < backStartAreaX) && (evt.touches[0].clientX < backStartAreaX)) {
 			arrowIcon.src = white
 			arrowIcon.style.transform = "scaleX(1)"
 
@@ -62,7 +62,7 @@ var gestureExtension = (() => {
 			addEventListener("touchend", touchEndBack)
 		}
 
-		if (evt.touches[0].clientX > forwardStartAreaX) {
+		if ((evt.touches[0].screenX > forwardStartAreaX) && (evt.touches[0].clientX > forwardStartAreaX)) {
 			arrowIcon.src = white
 			arrowIcon.style.transform = "scaleX(-1)"
 
