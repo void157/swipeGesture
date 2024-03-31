@@ -8,14 +8,19 @@
 var gestureExtension = (() => {
 	// console.log("swipeGesture extension start")
 
-	const maxWidth = document.documentElement.clientWidth
-	const iconSize = parseInt(maxWidth * 0.08)
+	const maxScreenWidth = document.documentElement.clientWidth
+	const maxScrollWidth = document.documentElement.scrollWidth
+	const iconSize = parseInt(maxScreenWidth * 0.08)
 	const defaultIconTop = (document.documentElement.clientHeight - iconSize) * 0.5
-	const backStartAreaX = parseInt(maxWidth * 0.05)
-	const forwardStartAreaX = maxWidth - backStartAreaX
+	const backStartAreaScreenX = parseInt(maxScreenWidth * 0.05)
+	const backStartAreaScrollX = parseInt(maxScrollWidth * 0.05)
+	const forwardStartAreaScreenX = maxScreenWidth - backStartAreaScreenX
+	const forwardStartAreaScrollX = maxScrollWidth - backStartAreaScrollX
 
-	const backEndAreaX = parseInt(maxWidth * 0.24)
-	const forwardEndAreaX = maxWidth - backEndAreaX
+	const backEndAreaScreenX = parseInt(maxScreenWidth * 0.24)
+	const backEndAreaScrollX = parseInt(maxScrollWidth * 0.24)
+	const forwardEndAreaScreenX = maxScreenWidth - backEndAreaScreenX
+	const forwardEndAreaScrollX = maxScrollWidth - backEndAreaScrollX
 
 	/*
 	<svg width="32mm" height="32mm" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -54,7 +59,7 @@ var gestureExtension = (() => {
 	}
 
 	function touchStart(evt) {
-		if ((evt.touches[0].screenX < backStartAreaX) && (evt.touches[0].clientX < backStartAreaX)) {
+		if ((evt.touches[0].screenX < backStartAreaScreenX) && (evt.touches[0].clientX < backStartAreaScrollX)) {
 			arrowIcon.src = white
 			arrowIcon.style.transform = "scaleX(1)"
 
@@ -62,7 +67,7 @@ var gestureExtension = (() => {
 			addEventListener("touchend", touchEndBack)
 		}
 
-		if ((evt.touches[0].screenX > forwardStartAreaX) && (evt.touches[0].clientX > forwardStartAreaX)) {
+		if ((evt.touches[0].screenX > forwardStartAreaScreenX) && (evt.touches[0].clientX > forwardStartAreaScrollX)) {
 			arrowIcon.src = white
 			arrowIcon.style.transform = "scaleX(-1)"
 
@@ -81,8 +86,8 @@ var gestureExtension = (() => {
 				arrowIcon.style.width = String(iconSize * pinchRatio) + "px"
 				arrowIcon.style.top = String(touch.clientY + (defaultIconTop - touch.screenY) * pinchRatio) + "px"
 			} else {
-				if (evt.changedTouches[0].screenX < backEndAreaX) {
-					arrowIcon.style.left = String((convertCurve(touch.screenX / iconSize) - 1) * iconSize * pinchRatio) + "px"	//値が0付近のため*pinchRatio不要
+				if (evt.changedTouches[0].screenX < backEndAreaScreenX) {
+					arrowIcon.style.left = String((convertCurve(touch.screenX / iconSize) - 1) * iconSize * pinchRatio) + "px"
 					arrowIcon.style.display = ""
 					arrowIcon.src = white
 					swipedBackEnough = false
@@ -113,14 +118,14 @@ var gestureExtension = (() => {
 		if (evt.changedTouches[0].identifier == 0) {
 			evt.preventDefault()
 			touch = evt.touches[0]
-			if (maxWidth - iconSize < touch.screenX) {
+			if (maxScreenWidth - iconSize < touch.screenX) {
 				arrowIcon.style.display = "none"
-				pinchRatio = (maxWidth - touch.clientX) / (maxWidth - touch.screenX)
+				pinchRatio = (maxScrollWidth - touch.clientX) / (maxScreenWidth - touch.screenX)
 				arrowIcon.style.width = String(iconSize * pinchRatio) + "px"
 				arrowIcon.style.top = String(touch.clientY + (defaultIconTop - touch.screenY) * pinchRatio) + "px"
 			} else {
-				if (evt.changedTouches[0].screenX > forwardEndAreaX) {
-					arrowIcon.style.left = String(maxWidth - convertCurve((maxWidth - touch.screenX) / iconSize) * iconSize * pinchRatio) + "px"
+				if (evt.changedTouches[0].screenX > forwardEndAreaScreenX) {
+					arrowIcon.style.left = String(maxScrollWidth - convertCurve((maxScreenWidth - touch.screenX) / iconSize) * iconSize * pinchRatio) + "px"
 					arrowIcon.style.display = ""
 					arrowIcon.src = white
 					swipedForwardEnough = false
