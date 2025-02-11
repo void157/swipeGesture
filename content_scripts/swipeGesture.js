@@ -18,9 +18,9 @@ var gestureExtension = (() => {
 	const forwardStartAreaScrollX = maxScrollWidth - backStartAreaScrollX
 
 	const backEndAreaScreenX = parseInt(maxScreenWidth * 0.24)
-	const backEndAreaScrollX = parseInt(maxScrollWidth * 0.24)
+	// const backEndAreaScrollX = parseInt(maxScrollWidth * 0.24)
 	const forwardEndAreaScreenX = maxScreenWidth - backEndAreaScreenX
-	const forwardEndAreaScrollX = maxScrollWidth - backEndAreaScrollX
+	// const forwardEndAreaScrollX = maxScrollWidth - backEndAreaScrollX
 
 	/*
 	<svg width="32mm" height="32mm" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -29,9 +29,10 @@ var gestureExtension = (() => {
 	</svg>
 	*/
 
-	const purple = browser.runtime.getURL('arrow_p.png');;
-	const white = browser.runtime.getURL('arrow_w.png');;
+	const purple = browser.runtime.getURL('../icons/arrow_p.png');;
+	const white = browser.runtime.getURL('../icons/arrow_w.png');;
 	
+	// Making icon element.
 	const arrowIcon = document.createElement('img');
 	arrowIcon.style.position = "fixed"
 	arrowIcon.style.top = "50%"
@@ -40,7 +41,7 @@ var gestureExtension = (() => {
 	arrowIcon.src = white
 	document.body.appendChild(arrowIcon);
 
-	let pinchRatio = 1
+	// let pinchRatio = 1
 
 	
 	let swipedBackEnough = false
@@ -48,6 +49,7 @@ var gestureExtension = (() => {
 
 	// let ticking = false
 
+	// Function for pointer position and icon position.
 	function convertCurve(x) {
 		if (x <= 1) {
 			return x - 1
@@ -82,8 +84,8 @@ var gestureExtension = (() => {
 			touch = evt.touches[0]
 			if (touch.screenX < iconSize) {
 				arrowIcon.style.display = "none"
-				pinchRatio = touch.clientX / touch.screenX
-				arrowIcon.style.width = String(iconSize * pinchRatio) + "px"
+				// pinchRatio = touch.clientX / touch.screenX
+				arrowIcon.style.width = String(iconSize / window.visualViewport.scale) + "px"
 				arrowIcon.style.top = String(touch.clientY + (defaultIconTop - touch.screenY) * pinchRatio) + "px"
 			} else {
 				if (evt.changedTouches[0].screenX < backEndAreaScreenX) {
