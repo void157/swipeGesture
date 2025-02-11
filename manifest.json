@@ -1,17 +1,22 @@
 {
 
-  "description": "Swiping gestures to move page back/forward",
-  "manifest_version": 2,
-  "name": "swipeGesture",
-  "version": "1.3",
-  "homepage_url": "https://github.com/void157/swipeGesture",
+	"description": "Swiping gestures to move page back/forward",
+	"manifest_version": 2,
+	"name": "swipeGesture",
+	"version": "1.3",
+	"homepage_url": "https://github.com/void157/swipeGesture",
 
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "match_about_blank": true,
-      "js": ["swipeGesture.js"]
-    }
-  ]
+	"content_scripts": [
+	{
+		"matches": ["<all_urls>"],
+		"match_about_blank": true,
+		"js": ["swipeGesture.js"]
+	}
+	],
+
+	"options_ui": {
+	"page": "options.html",
+	"browser_style": true
+}
 
 }
