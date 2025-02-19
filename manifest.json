@@ -18,12 +18,12 @@
 	{
 		"matches": ["<all_urls>"],
 		"match_about_blank": true,
-		"js": ["swipeGesture.js"]
+		"js": ["content_scripts/swipeGesture.js"]
 	}
 	],
 
 	"background": {
-		"scripts": ["background.js"]
+		"scripts": ["content_scripts/background.js"]
 	},
 
 	"options_ui": {
