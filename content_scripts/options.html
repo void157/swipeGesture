@@ -1,9 +1,90 @@
 <!doctype html>
+<meta name="viewport" content="width=device-width">
+<!-- <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"> -->
 <style>
+	.hex_color:valid {
+		background-color: lightgreen;
+	}
+	
+	.hex_color:invalid {
+		background-color: palevioletred;
+	}
+
+	
+	body {
+		box-sizing: border-box;
+		margin: 0;
+	}
+
+	table {
+		display: flex;
+		/* justify-content: right; */
+	}
+	
+	input[type="number"] {
+		width: 4em;
+		text-align: right;
+		touch-action: manipulation;
+	}
+
+	/* input {
+		float: right;
+	} */
+
+	.hex_color {
+		width: 7ch;
+		font-family: monospace;
+	}
+
+	#icon {
+		translate: 0 -50%;
+		/* scale: -1;  */
+		left: 0vw;
+		width: 8vw;
+		top: 50%;
+		z-index: -1;
+		position: fixed;
+	}
+
+	#start_area {
+		position: fixed;
+		box-sizing: border-box;
+		top: 0vw;
+		height: 100%;
+		z-index: -10;
+		width: 5vw;
+		border: solid #0ff;
+		border-width: 1px;
+		background: repeating-linear-gradient(-45deg,#0ff,#0ff 1px,#0000 0 , #0000 9px);
+	}
+
+	#end_area {
+		position: fixed;
+		box-sizing: border-box;
+		top: 0vw;
+		height: 100%;
+		z-index: -10;
+		width: 76vw;
+		right: 0vw;
+		border: solid #f0f;
+		border-width: 1px;
+		background: repeating-linear-gradient(45deg,#f0f,#f0f 1px,#0000 0 , #0000 9px);
+	}
+	
 	@media (prefers-color-scheme: dark) {
+		html {
+			color-scheme: dark;
+		}
 		body {
 			background-color: #23222b;
-			color: #fff;
+		}
+	
+		.hex_color:valid {
+			background-color: darkgreen;
+		}
+		
+		.hex_color:invalid {
+			background-color: #580000;
 		}
 	}
 
@@ -11,14 +92,138 @@
 
 <html>
 	<head>
-	<meta charset="utf-8" />
+		<meta charset="utf-8" />
 	</head>
+	
+	<svg id="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" >
+		<circle id="icon_circle" r="16" cx="16" cy="16" fill="#333333"></circle>
+		<path id="icon_arrow" d="m16.5 8.5-7.5 7.5 7.5 7.5 1.5-1.5-5-5h11v-2h-11l5-5z" fill="#8000d7"></path>
+	</svg>
+	<h2>Settings</h2>
 
-	<form>
-		<label>Favorite color</label>
-		<input type="text" id="color" />
+	<!-- <h2>Enable/disable</h2>
+	<label>
+		<input type="checkbox" />
+		Enable swipeGesture
+	</label> -->
+
+	<form id="form0">
+		<table>
+			<tr>
+				<td>
+					<h2>Icon</h2>
+				</td>
+			</tr>
+			<tr>
+				<td>size</td>
+				<td>
+					<input id="icon_size_num" type="number" min="1" value="8" step="any"/>
+				</td>
+				<td>
+					<select id="icon_size_unit">
+						<option>%</option>
+						<!-- <option>px</option> -->
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id="icon_size_range" type="range" style="width: 50vw; " value="8" min="0" max="50" step="0.1">
+				</td>
+			</tr>
+			<tr>
+				<td>y position</td>
+				<td>
+					<input id="icon_y_position" type="number" min="1" value="50" step="any"/>
+				</td>
+				<td>
+					<select id="icon_y_position_unit">
+						<option>%</option>
+						<!-- <option>px</option> -->
+					</select>
+				</td>
+			</tr>
+			<tr><td><br></td></tr>
+
+			<!-- <tr>
+				<td>
+					<label>
+						<input type="checkbox" />
+						Use dafult color
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<td>arrow color</td>
+				<td>
+					<input id="arrow_color_picker" type="color" value="#8000d7" />
+				</td>
+				<td>
+					<input id="arrow_color_hex" type="text" value="#8000d7" class="hex_color" pattern="#[0-9A-Fa-f]{6}" placeholder="(hex)">
+				</td>
+			</tr>
+			<tr>
+				<td>circle color</td>
+				<td>
+					<input id="circle_color_picker" type="color" value="#333333" />
+				</td>
+				<td>
+					<input id="circle_color_hex" type="text" value="#333333" class="hex_color" pattern="#[0-9A-Fa-f]{6}" placeholder="(hex)">
+				</td>
+			</tr> -->
+			<tr><td><br></td></tr>
+			<tr>
+				<td>
+					<h2>Active area</h2>
+				</td>
+			</tr>
+			<tr>
+				<td>swipe start area</td>
+				<td>
+					<input id="start_area_num" type="number" value="5" min="1" max="49" step="any">
+				</td>
+				<td>
+					<select>
+						<option>%</option>
+						<!-- <option>px</option> -->
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input id="start_area_range" type="range" style="width: 49vw; " value="5" min="1" max="49">
+				</td>
+			</tr>
+			<tr>
+				<td>swipe end area</td>
+				<td>
+					<input id="end_area_num" type="number" value="24" min="1" max="100" step="any">
+				</td>
+				<td>
+					<select>
+						<option>%</option>
+						<!-- <option>px</option> -->
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				</td>
+				<td>
+				</td>
+			</tr>
+		</table>
+		<input id="position_range" type="range" orient="vertical" style="right: 10vw; height: 100%; position: fixed;writing-mode: vertical-lr; top: 0vw; z-index: 0;">
+		
+		<input id="end_area_range" type="range" style="width: 100%; " value="24">
 		<button type="submit">Save</button>
+		<button type="reset">Reset</button>
+		<div id="start_area"></div>
+		<div id="end_area"></div>
 	</form>
+
+	
+	<br><br>
 	<script src="options.js"></script>
-	</body>
+</body>
 </html>

@@ -6,6 +6,10 @@
 	"version": "1.3",
 	"homepage_url": "https://github.com/void157/swipeGesture",
 
+	"permissions": [
+		"storage"
+	],
+
 	"icons": {
 		"48": "icons/arrow.svg"
 	},
@@ -18,9 +22,14 @@
 	}
 	],
 
+	"background": {
+		"scripts": ["background.js"]
+	},
+
 	"options_ui": {
 		"page": "content_scripts/options.html",
-		"browser_style": true
+		"browser_style": true,
+		"open_in_tab": false
 	},
 
 	"browser_action": {
