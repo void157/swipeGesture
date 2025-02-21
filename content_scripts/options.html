@@ -14,6 +14,7 @@
 	body {
 		box-sizing: border-box;
 		margin: 0;
+		background-color: #0000;
 	}
 
 	table {
@@ -58,6 +59,28 @@
 		background: repeating-linear-gradient(-45deg,#0ff,#0ff 1px,#0000 0 , #0000 9px);
 	}
 
+	#icon_size_range {
+		width: 50vw;
+	}
+
+	#start_area_range {
+		width: 50vw;
+	}
+	
+	#icon_position_range {
+		right: 10vw;
+		height: 100%;
+		position: fixed;
+		writing-mode: vertical-lr;
+		top: 0vw;
+		z-index: 0;
+	}
+
+	#end_area_range {
+		/* position: fixed; */
+		width: 100vw;
+	}	
+
 	#end_area {
 		position: fixed;
 		box-sizing: border-box;
@@ -70,7 +93,7 @@
 		border-width: 1px;
 		background: repeating-linear-gradient(45deg,#f0f,#f0f 1px,#0000 0 , #0000 9px);
 	}
-	
+
 	@media (prefers-color-scheme: dark) {
 		html {
 			color-scheme: dark;
@@ -117,29 +140,29 @@
 			<tr>
 				<td>size</td>
 				<td>
-					<input id="icon_size_num" type="number" min="1" value="8" step="any"/>
+					<input id="icon_size_num" type="number" min="1" value="8" step="0.1"/>
 				</td>
 				<td>
 					<select id="icon_size_unit">
 						<option>%</option>
-						<!-- <option>px</option> -->
+						<option>px</option>
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input id="icon_size_range" type="range" style="width: 50vw; " value="8" min="0" max="50" step="0.1">
+					<input id="icon_size_range" type="range" value="8" min="0.1" max="50" step="0.1">
 				</td>
 			</tr>
 			<tr>
 				<td>y position</td>
 				<td>
-					<input id="icon_y_position" type="number" min="1" value="50" step="any"/>
+					<input id="icon_position_num" type="number" min="0" value="50" step="any"/>
 				</td>
 				<td>
-					<select id="icon_y_position_unit">
+					<select id="icon_position_unit">
 						<option>%</option>
-						<!-- <option>px</option> -->
+						<option>px</option>
 					</select>
 				</td>
 			</tr>
@@ -180,29 +203,29 @@
 			<tr>
 				<td>swipe start area</td>
 				<td>
-					<input id="start_area_num" type="number" value="5" min="1" max="49" step="any">
+					<input id="start_area_num" type="number" value="5" min="0" max="50" step="any">
 				</td>
 				<td>
-					<select>
+					<select id="start_area_unit">
 						<option>%</option>
-						<!-- <option>px</option> -->
+						<option>px</option>
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input id="start_area_range" type="range" style="width: 49vw; " value="5" min="1" max="49">
+					<input id="start_area_range" type="range" value="5" max="50"step="any">
 				</td>
 			</tr>
 			<tr>
 				<td>swipe end area</td>
 				<td>
-					<input id="end_area_num" type="number" value="24" min="1" max="100" step="any">
+					<input id="end_area_num" type="number" value="24" max="100" step="any">
 				</td>
 				<td>
-					<select>
+					<select id="end_area_unit">
 						<option>%</option>
-						<!-- <option>px</option> -->
+						<option>px</option>
 					</select>
 				</td>
 			</tr>
@@ -213,9 +236,9 @@
 				</td>
 			</tr>
 		</table>
-		<input id="position_range" type="range" orient="vertical" style="right: 10vw; height: 100%; position: fixed;writing-mode: vertical-lr; top: 0vw; z-index: 0;">
+		<input id="icon_position_range" type="range" step="0.01" value="50" orient="vertical" >
 		
-		<input id="end_area_range" type="range" style="width: 100%; " value="24">
+		<input id="end_area_range" type="range" value="24" max="100" step="any">
 		<button type="submit">Save</button>
 		<button type="reset">Reset</button>
 		<div id="start_area"></div>

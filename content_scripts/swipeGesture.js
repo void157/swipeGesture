@@ -42,6 +42,7 @@ var gestureExtension = (() => {
 	arrowIcon.style.position = "fixed"
 	arrowIcon.style.translate = "0% -50%"
 	arrowIcon.style.display = "none"
+	arrowIcon.style.zIndex = Number.MAX_SAFE_INTEGER
 	arrowIcon.src = white
 	document.body.appendChild(arrowIcon);
 
@@ -80,7 +81,7 @@ var gestureExtension = (() => {
 
 		// if ((evt.touches[0].screenX > forwardStartAreaScreenX) && (evt.touches[0].clientX > forwardStartAreaScrollX)) {
 		if (((clientWidth - evt.touches[0].pageX) < backStartAreaScreenX / visualViewport.scale) && 
-			visualViewport.pageLeft + visualViewport.width > document.documentElement.scrollWidth - 0.1) {
+			visualViewport.pageLeft + visualViewport.width > document.documentElement.scrollWidth - 1) {
 			arrowIcon.src = white
 			arrowIcon.style.top = String(visualViewport.offsetTop + visualViewport.height * iconPos) + "px"
 			arrowIcon.style.width = String(iconSize / visualViewport.scale) + "px"

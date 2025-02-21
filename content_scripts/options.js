@@ -8,51 +8,110 @@ form0.addEventListener("reset", function(){
 	endArea.style.width = "76vw"
 })
 
-const iconPosRange = document.getElementById("position_range");
-const posNum = document.getElementById("icon_y_position")
+const iconPosRange = document.getElementById("icon_position_range");
+const iconPosNum = document.getElementById("icon_position_num")
+const iconPosUnit = document.getElementById("icon_position_unit")
 
 iconPosRange.addEventListener("input", function(){
-	icon.style.top = iconPosRange.value + "%"
-	posNum.value = iconPosRange.value
+	icon.style.top = iconPosRange.value + (iconPosUnit.selectedIndex === 0 ? "vh" : "px")
+	iconPosNum.value = iconPosRange.value
 })
 
-posNum.addEventListener("input", function(){
-	icon.style.top = posNum.value + "%"
-	iconPosRange.value = posNum.value
+iconPosNum.addEventListener("input", function(){
+	icon.style.top = iconPosNum.value + (iconPosUnit.selectedIndex === 0 ? "vh" : "px")
+	iconPosRange.value = iconPosNum.value
+})
+
+iconPosUnit.addEventListener("change", function(){
+	if (iconPosUnit.selectedIndex === 0) {
+		// %
+		var temp = Number(iconPosRange.value)
+		iconPosRange.max = 100
+		iconPosNum.value = iconPosNum.value / visualViewport.height * 100
+		iconPosRange.value = temp / visualViewport.height * 100
+		// iconPosRange.min = 0
+	} else {
+		// px
+		iconPosRange.max = visualViewport.height
+		iconPosNum.value = visualViewport.height * iconPosNum.value / 100
+		iconPosRange.value = visualViewport.height * iconPosRange.value / 100
+		// iconPosRange.min = 0
+	}
+	// icon.style.top = iconPosNum.value + (iconPosUnit.selectedIndex === 0 ? "vh" : "px")
 })
 
 const iconSizeRange = document.getElementById("icon_size_range");
 const iconSizeNum = document.getElementById("icon_size_num");
+const iconSizeUnit = document.getElementById("icon_size_unit");
 
 iconSizeNum.addEventListener("input", function(){
-	icon.style.width = iconSizeNum.value + "vw"
+	icon.style.width = iconSizeNum.value + (iconSizeUnit.selectedIndex === 0 ? "vw" : "px")
 	iconSizeRange.value = iconSizeNum.value
 })
 
 iconSizeRange.addEventListener("input", function(){
-	icon.style.width = iconSizeRange.value + "vw"
+	icon.style.width = iconSizeRange.value + (iconSizeUnit.selectedIndex === 0 ? "vw" : "px")
 	iconSizeNum.value = iconSizeRange.value
+})
+
+iconSizeUnit.addEventListener("change", function(){
+	if (iconSizeUnit.selectedIndex === 0) {
+		// %
+		var temp = Number(iconSizeRange.value)
+		iconSizeRange.max = 50
+		iconSizeNum.value = iconSizeNum.value / visualViewport.width * 100
+		iconSizeRange.value = temp / visualViewport.width * 100
+		// iconSizeRange.min = 0
+	} else {
+		// px
+		iconSizeRange.max = visualViewport.width / 2
+		iconSizeNum.value = visualViewport.width * iconSizeNum.value / 100
+		iconSizeRange.value = visualViewport.width * iconSizeRange.value / 100
+		// iconSizeRange.min = 0
+	}
+	// icon.style.top = iconSizeNum.value + (iconSizeUnit.selectedIndex === 0 ? "vh" : "px")
 })
 
 const startAreaRange = document.getElementById("start_area_range")
 const startAreaNum = document.getElementById("start_area_num")
+const startAreaUnit = document.getElementById("start_area_unit")
 const startArea = document.getElementById("start_area")
 
 startAreaRange.addEventListener("input", function(){
-	startArea.style.width = startAreaRange.value + "vw"
+	startArea.style.width = startAreaRange.value + (startAreaUnit.selectedIndex === 0 ? "vw" : "px")
 	startAreaNum.value = startAreaRange.value
 })
 
 startAreaNum.addEventListener("input", function(){
 	// 0 to 49
 	// startAreaNum.value = Math.max(0.0, Math.min(startAreaNum.value, 49.0))
-	startArea.style.width = startAreaNum.value + "vw"
+	startArea.style.width = startAreaNum.value + (startAreaUnit.selectedIndex === 0 ? "vw" : "px")
 	startAreaRange.value = startAreaNum.value
 })
 
+startAreaUnit.addEventListener("change", function(){
+	if (startAreaUnit.selectedIndex === 0) {
+		// %
+		var temp = Number(startAreaRange.value)
+		startAreaRange.max = 50
+		startAreaNum.max = 50
+		startAreaNum.value = temp / visualViewport.width * 100
+		startAreaRange.value = startAreaNum.value
+		// startAreaRange.min = 0
+	} else {
+		// px
+		startAreaRange.max = visualViewport.width / 2
+		startAreaNum.max = startAreaRange.max
+		startAreaNum.value = visualViewport.width * startAreaNum.value / 100
+		startAreaRange.value = startAreaNum.value
+		// startAreaRange.min = 0
+	}
+	// startArea.style.width = startAreaNum.value + (startAreaUnit.selectedIndex === 0 ? "vw" : "px")
+})
 
 const endAreaRange = document.getElementById("end_area_range")
 const endAreaNum = document.getElementById("end_area_num")
+const endAreaUnit = document.getElementById("end_area_unit")
 const endArea = document.getElementById("end_area")	
 
 endAreaRange.addEventListener("input", function(){
@@ -65,6 +124,26 @@ endAreaNum.addEventListener("input", function(){
 	// endAreaNum.value = Math.max(0.0, Math.min(endAreaNum.value, 49.0))
 	endArea.style.width = (100 - endAreaNum.value) + "vw"
 	endAreaRange.value = endAreaNum.value
+})
+
+endAreaUnit.addEventListener("change", function(){
+	if (endAreaUnit.selectedIndex === 0) {
+		// %
+		var temp = Number(endAreaRange.value)
+		endAreaRange.max = 100
+		endAreaNum.max = 100
+		endAreaRange.value = temp / visualViewport.width * 100
+		endAreaNum.value = endAreaRange.value
+		// endAreaRange.min = 0
+	} else {
+		// px
+		endAreaRange.max = visualViewport.width
+		endAreaNum.max = visualViewport.width
+		endAreaNum.value = visualViewport.width * endAreaNum.value / 100
+		endAreaRange.value = endAreaNum.value
+		// endAreaRange.min = 0
+	}
+	// endArea.style.width = (100 - endAreaNum.value) + "vw"
 })
 
 startArea.addEventListener("click", function(){
