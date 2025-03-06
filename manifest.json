@@ -11,7 +11,7 @@
 	],
 
 	"icons": {
-		"48": "icons/arrow.svg"
+		"128": "icons/arrow_p.png"
 	},
 
 	"content_scripts": [
@@ -36,6 +36,11 @@
 		"default_icon": "icons/arrow.svg",
 		"default_title": "swipeGesture",
 		"default_popup": "content_scripts/options.html"
-	}
+	},
 
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "{e8218aa1-ee45-443e-8aca-044a401bbf7f}"
+		}
+	}
 }
