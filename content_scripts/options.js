@@ -219,8 +219,6 @@ function saveOptions(e) {
 
 function restoreOptions() {
 	function setCurrentChoice(result) {
-		iconSizeNum.value = result.iconSizeNum || 8
-		iconSizeUnit.selectedIndex = result.iconSizeUnit || 0
 		startAreaNum.value = result.startAreaNum || 5
 		startAreaUnit.selectedIndex = result.startAreaUnit || 0
 		endAreaNum.value = result.endAreaNum || 76

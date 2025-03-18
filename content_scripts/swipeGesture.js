@@ -6,49 +6,73 @@
 */
 
 var gestureExtension = (() => {
-	// console.log("swipeGesture extension start")
+	console.log("swipeGesture extension start")
+
+	const purple = browser.runtime.getURL('../icons/arrow_p.png')
+	const white = browser.runtime.getURL('../icons/arrow_w.png')
 
 	// (load variables)
-	var startAreaRange = 0.05
-	// var unit_y_pos = "vh"
-	const iconPos = 0.5
-	const iconSize = window.innerWidth * 0.08
 
-	const clientWidth = document.documentElement.clientWidth
-	const maxScrollWidth = document.documentElement.scrollWidth
-	// const defaultIconTop = (document.documentElement.clientHeight - iconSize) * 0.5
-	const backStartAreaScreenX = parseInt(clientWidth * 0.05)
-	// const backStartAreaScrollX = parseInt(maxScrollWidth * 0.05)
-	// const forwardStartAreaScreenX = clientWidth - backStartAreaScreenX
-	// const forwardStartAreaScrollX = maxScrollWidth - backStartAreaScrollX
+	let iconSizeNum
+	let iconSizeUnit
+	let iconPosNum
+	let iconPosUnit
+	let startAreaNum
+	let startAreaUnit
+	let endAreaNum
+	let endAreaUnit
 
-	const backEndAreaScreenX = parseInt(clientWidth * 0.24)
-	// const backEndAreaScrollX = parseInt(maxScrollWidth * 0.24)
-	const forwardEndAreaScreenX = clientWidth - backEndAreaScreenX
-	// const forwardEndAreaScrollX = maxScrollWidth - backEndAreaScrollX
+	let arrowIcon
 
-	/*
-	<svg width="32mm" height="32mm" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-	<circle r="16" cx="16" cy="16" fill="#333"/>
-	<path d="m16.5 8.5-7.5 7.5 7.5 7.5 1.5-1.5-5-5h11v-2h-11l5-5z" fill="#8000d7"/>
-	</svg>
-	*/
+	let backStartAreaScreenX
+	let backEndAreaScreenX
 
-	const purple = browser.runtime.getURL('../icons/arrow_p.png');;
-	const white = browser.runtime.getURL('../icons/arrow_w.png');;
-	
-	// Making icon element.
-	const arrowIcon = document.createElement('img');
-	arrowIcon.style.position = "fixed"
-	arrowIcon.style.translate = "0% -50%"
-	arrowIcon.style.display = "none"
-	arrowIcon.style.zIndex = Number.MAX_SAFE_INTEGER
-	arrowIcon.src = white
-	document.body.appendChild(arrowIcon);
+	// function restoreOptions() {
+	function restore(result) {
+		iconSizeNum = result.iconSizeNum || 8
+		iconSizeUnit = (result.iconSizeUnit === 0 ? "vw" : "px")
+		iconPosNum = result.iconPosNum || 50
+		iconPosUnit = (result.iconPosUnit === 0 ? "vh" : "px")
+		startAreaNum = result.startAreaNum || 5
+		startAreaUnit = (result.startAreaUnit === 0 ? "vw" : "px")
+		endAreaNum = result.endAreaNum || 76
+		endAreaUnit = (result.endAreaUnit === 0 ? "vw" : "px")
+
+		/*
+		<svg width="32mm" height="32mm" version="1.1" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+		<circle r="16" cx="16" cy="16" fill="#333"/>
+		<path d="m16.5 8.5-7.5 7.5 7.5 7.5 1.5-1.5-5-5h11v-2h-11l5-5z" fill="#8000d7"/>
+		</svg>
+		*/
+
+		// Making icon element.
+		arrowIcon = document.createElement('img')
+		arrowIcon.style.position = "fixed"
+		arrowIcon.style.translate = "0% -50%"
+		arrowIcon.style.display = "none"
+		arrowIcon.style.zIndex = Number.MAX_SAFE_INTEGER
+		arrowIcon.src = white
+		
+		arrowIcon.style.top = iconPosNum + iconPosUnit
+		arrowIcon.style.width = iconSizeNum + iconSizeUnit
+		document.body.appendChild(arrowIcon)
+
+		backStartAreaScreenX = (startAreaUnit == "vw" ? visualViewport.width * startAreaNum / 100 : startAreaNum + startAreaUnit)
+		backEndAreaScreenX = (endAreaUnit == "vw" ? visualViewport.width * endAreaNum / 100 : endAreaNum + endAreaUnit)	// vw or px
+		// console.log(backStartAreaScreenX, backEndAreaScreenX)
+		// console.log(iconSizeNum, iconSizeUnit, iconPosNum, iconPosUnit, startAreaNum, startAreaUnit, endAreaNum, endAreaUnit)
+	}
+	function onError(error) {
+		console.log(`Error: ${error}`)
+	}
+	var getting = browser.storage.local.get(["iconPosNum", "iconPosUnit", "iconSizeNum", "iconSizeUnit", "startAreaNum", "startAreaUnit", "endAreaNum", "endAreaUnit"]);
+	getting.then(restore, onError)
+	// }
+
+	// document.addEventListener("DOMContentLoaded", restoreOptions);
 
 	// let pinchRatio = 1
 
-	
 	let swipedBackEnough = false
 	let swipedForwardEnough = false
 
@@ -56,10 +80,17 @@ var gestureExtension = (() => {
 
 	// Function for pointer position and icon position.
 	function convertCurve(x) {
-		if (x <= 2) {
-			return -0.25*(x-2)**2
+		// if (x <= 2) {
+		// 	return -0.25*(x-2)**2
+		// } else {
+		// 	return
+		// }
+		if (x <= 1) {
+			return x - 1
+		} else if (x <= 3) {
+			return -0.25 * (x-3)**2 + 1
 		} else {
-			return
+			return 1
 		}
 	}
 
@@ -68,11 +99,11 @@ var gestureExtension = (() => {
 		// if ((evt.touches[0].screenX < backStartAreaScreenX) && (evt.touches[0].clientX < backStartAreaScrollX)) {
 
 		// touch座標がscale補正後の指定範囲内 && viewportが画面（左）端にあること
-		if ((evt.touches[0].pageX < backStartAreaScreenX / visualViewport.scale) &&
-			visualViewport.pageLeft == 0) {
+		if ((evt.touches[0].pageX < backStartAreaScreenX / visualViewport.scale) && visualViewport.pageLeft == 0) {
 			arrowIcon.src = white
-			arrowIcon.style.top = String(visualViewport.offsetTop + visualViewport.height * iconPos) + "px"
-			arrowIcon.style.width = String(iconSize / visualViewport.scale) + "px"
+			arrowIcon.style.top = String(visualViewport.offsetTop + (iconPosUnit == "px" ? iconPosNum / visualViewport.scale : visualViewport.height * iconPosNum / 100)) + "px"
+			arrowIcon.style.width = String(iconSizeNum / visualViewport.scale) + iconSizeUnit
+			console.log(arrowIcon.style.width)
 			arrowIcon.style.scale = 1
 
 			addEventListener("touchmove", touchMoveBack, {passive: false})
@@ -80,11 +111,11 @@ var gestureExtension = (() => {
 		}
 
 		// if ((evt.touches[0].screenX > forwardStartAreaScreenX) && (evt.touches[0].clientX > forwardStartAreaScrollX)) {
-		if (((clientWidth - evt.touches[0].pageX) < backStartAreaScreenX / visualViewport.scale) && 
+		if (((document.documentElement.scrollWidth - evt.touches[0].pageX) < backStartAreaScreenX / visualViewport.scale) && 
 			visualViewport.pageLeft + visualViewport.width > document.documentElement.scrollWidth - 1) {
 			arrowIcon.src = white
-			arrowIcon.style.top = String(visualViewport.offsetTop + visualViewport.height * iconPos) + "px"
-			arrowIcon.style.width = String(iconSize / visualViewport.scale) + "px"
+			arrowIcon.style.top = String(visualViewport.offsetTop + visualViewport.height * iconPosNum / 100) + iconPosUnit
+			arrowIcon.style.width = String(iconSizeNum / visualViewport.scale) + iconSizeUnit
 			arrowIcon.style.scale = -1
 
 			addEventListener("touchmove", touchMoveForward, {passive: false})
@@ -98,47 +129,42 @@ var gestureExtension = (() => {
 			// touch = evt.touches[0]
 			// arrowIcon.style.scale = 1 / visualViewport.scale
 
-			if (evt.touches[0].pageX < iconSize / visualViewport.scale) {
-				arrowIcon.style.display = "none"
-				// pinchRatio = touch.clientX / touch.screenX
-				arrowIcon.style.width = String(iconSize / visualViewport.scale) + "px"
-				// arrowIcon.style.top = String(visualViewport.offsetTop + visualViewport.height * iconPos) + "px"
+			// if (evt.touches[0].pageX < iconSizeNum / visualViewport.scale) {
+			// 	arrowIcon.style.display = "none"
+			// 	// pinchRatio = touch.clientX / touch.screenX
+			// 	arrowIcon.style.width = String(iconSizeNum / visualViewport.scale) + iconSizeUnit
+			// } else {
+			if (evt.changedTouches[0].pageX < backEndAreaScreenX / visualViewport.scale) {
+				arrowIcon.style.left = String((convertCurve(evt.touches[0].pageX * visualViewport.scale / iconSizeNum)) * iconSizeNum / visualViewport.scale) + iconSizeUnit
+				arrowIcon.style.display = ""
+				arrowIcon.src = white
+				swipedBackEnough = false
 			} else {
-				if (evt.changedTouches[0].pageX < backEndAreaScreenX / visualViewport.scale) {
-					// arrowIcon.style.left = String((convertCurve(evt.touches[0].pageX / visualViewport.scale / iconSize) - 1) * iconSize / visualViewport.scale) + "px"
-					arrowIcon.style.left = String((convertCurve(evt.touches[0].pageX * visualViewport.scale / iconSize)) * iconSize / visualViewport.scale) + "px"
-					arrowIcon.style.display = ""
-					arrowIcon.src = white
-					swipedBackEnough = false
-				} else {
-					arrowIcon.src = purple
-					swipedBackEnough = true
-				}
+				arrowIcon.src = purple
+				swipedBackEnough = true
 			}
-			
+			// }
 		}
 	}
-	
+
 	function touchMoveForward(evt) {
 		if (evt.changedTouches[0].identifier == 0) {
 			evt.preventDefault()
 			// touch = evt.touches[0]
-			if ((document.documentElement.scrollWidth - iconSize / visualViewport.scale) < evt.touches[0].pageX) {
-				arrowIcon.style.display = "none"
-				// pinchRatio = (maxScrollWidth - touch.clientX) / (clientWidth - touch.screenX)
-				arrowIcon.style.width = String(iconSize / visualViewport.scale) + "px"
-				// arrowIcon.style.top = String(visualViewport.offsetTop + visualViewport.height * iconPos) + "px"
+			// if ((document.documentElement.scrollWidth - iconSizeNum / visualViewport.scale) < evt.touches[0].pageX) {
+			// 	arrowIcon.style.display = "none"
+			// 	arrowIcon.style.width = String(iconSizeNum / visualViewport.scale) + iconSizeUnit
+			// } else {
+			if (evt.changedTouches[0].pageX > (document.documentElement.scrollWidth - backEndAreaScreenX / visualViewport.scale)) {
+				arrowIcon.style.left = String(document.documentElement.scrollWidth - (convertCurve((document.documentElement.scrollWidth - evt.touches[0].pageX) * visualViewport.scale / iconSizeNum) + 1) * iconSizeNum) + iconSizeUnit
+				arrowIcon.style.display = ""
+				arrowIcon.src = white
+				swipedForwardEnough = false
 			} else {
-				if (evt.changedTouches[0].pageX > (document.documentElement.scrollWidth - backEndAreaScreenX / visualViewport.scale)) {
-					arrowIcon.style.left = String(document.documentElement.scrollWidth - convertCurve((document.documentElement.scrollWidth - evt.touches[0].pageX) * visualViewport.scale / iconSize) * iconSize - iconSize / visualViewport.scale) + "px"
-					arrowIcon.style.display = ""
-					arrowIcon.src = white
-					swipedForwardEnough = false
-				} else {
-					arrowIcon.src = purple
-					swipedForwardEnough = true
-				}
+				arrowIcon.src = purple
+				swipedForwardEnough = true
 			}
+			// }
 		}
 	}
 
