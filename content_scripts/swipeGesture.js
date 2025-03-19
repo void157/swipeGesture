@@ -86,7 +86,7 @@ var gestureExtension = (() => {
 		// 	return
 		// }
 		if (x <= 1) {
-			return x - 1
+			return 2 * x - 2
 		} else if (x <= 3) {
 			return -0.25 * (x-3)**2 + 1
 		} else {
@@ -103,7 +103,6 @@ var gestureExtension = (() => {
 			arrowIcon.src = white
 			arrowIcon.style.top = String(visualViewport.offsetTop + (iconPosUnit == "px" ? iconPosNum / visualViewport.scale : visualViewport.height * iconPosNum / 100)) + "px"
 			arrowIcon.style.width = String(iconSizeNum / visualViewport.scale) + iconSizeUnit
-			console.log(arrowIcon.style.width)
 			arrowIcon.style.scale = 1
 
 			addEventListener("touchmove", touchMoveBack, {passive: false})
@@ -114,7 +113,7 @@ var gestureExtension = (() => {
 		if (((document.documentElement.scrollWidth - evt.touches[0].pageX) < backStartAreaScreenX / visualViewport.scale) && 
 			visualViewport.pageLeft + visualViewport.width > document.documentElement.scrollWidth - 1) {
 			arrowIcon.src = white
-			arrowIcon.style.top = String(visualViewport.offsetTop + visualViewport.height * iconPosNum / 100) + iconPosUnit
+			arrowIcon.style.top = String(visualViewport.offsetTop + (iconPosUnit == "px" ? iconPosNum / visualViewport.scale : visualViewport.height * iconPosNum / 100)) + "px"
 			arrowIcon.style.width = String(iconSizeNum / visualViewport.scale) + iconSizeUnit
 			arrowIcon.style.scale = -1
 
@@ -135,7 +134,7 @@ var gestureExtension = (() => {
 			// 	arrowIcon.style.width = String(iconSizeNum / visualViewport.scale) + iconSizeUnit
 			// } else {
 			if (evt.changedTouches[0].pageX < backEndAreaScreenX / visualViewport.scale) {
-				arrowIcon.style.left = String((convertCurve(evt.touches[0].pageX * visualViewport.scale / iconSizeNum)) * iconSizeNum / visualViewport.scale) + iconSizeUnit
+				arrowIcon.style.left = String(convertCurve(evt.touches[0].pageX * visualViewport.scale / iconSizeNum) * iconSizeNum / visualViewport.scale) + iconSizeUnit
 				arrowIcon.style.display = ""
 				arrowIcon.src = white
 				swipedBackEnough = false
@@ -156,7 +155,9 @@ var gestureExtension = (() => {
 			// 	arrowIcon.style.width = String(iconSizeNum / visualViewport.scale) + iconSizeUnit
 			// } else {
 			if (evt.changedTouches[0].pageX > (document.documentElement.scrollWidth - backEndAreaScreenX / visualViewport.scale)) {
-				arrowIcon.style.left = String(document.documentElement.scrollWidth - (convertCurve((document.documentElement.scrollWidth - evt.touches[0].pageX) * visualViewport.scale / iconSizeNum) + 1) * iconSizeNum) + iconSizeUnit
+				// arrowIcon.style.left = String(document.documentElement.scrollWidth - (convertCurve((document.documentElement.scrollWidth - evt.touches[0].pageX) * visualViewport.scale / iconSizeNum) + 1) * iconSizeNum) + iconSizeUnit
+				arrowIcon.style.left = String(document.documentElement.scrollWidth - (convertCurve((document.documentElement.scrollWidth - evt.touches[0].pageX) * visualViewport.scale / iconSizeNum) + 1) * iconSizeNum / visualViewport.scale) + iconSizeUnit
+				console.log(document.documentElement.scrollWidth - (convertCurve((document.documentElement.scrollWidth - evt.touches[0].pageX) * visualViewport.scale / iconSizeNum) + 1) * iconSizeNum / visualViewport.scale)
 				arrowIcon.style.display = ""
 				arrowIcon.src = white
 				swipedForwardEnough = false
@@ -170,27 +171,27 @@ var gestureExtension = (() => {
 
 	function touchEndBack(evt) {
 		if (evt.changedTouches[0].identifier == 0) {
+			removeEventListener("touchmove", touchMoveBack, {passive: false})
+			removeEventListener("touchend", touchEndBack)
 			arrowIcon.style.display = "none"
 			if (swipedBackEnough) {
 				swipedBackEnough = false
 				history.back()
 				// console.log("back")
 			}
-			removeEventListener("touchmove", touchMoveBack, {passive: false})
-			removeEventListener("touchend", touchEndBack)
 		}
 	}
 
 	function touchEndForward(evt) {
 		if (evt.changedTouches[0].identifier == 0) {
+			removeEventListener("touchmove", touchMoveForward, {passive: false})
+			removeEventListener("touchend", touchEndForward)
 			arrowIcon.style.display = "none"
 			if (swipedForwardEnough) {
 				swipedForwardEnough = false
 				history.forward()
 				// console.log("fore")
 			}
-			removeEventListener("touchmove", touchMoveForward, {passive: false})
-			removeEventListener("touchend", touchEndForward)
 		}
 	}
 
