@@ -57,8 +57,8 @@ var gestureExtension = (() => {
 		arrowIcon.style.width = iconSizeNum + iconSizeUnit
 		document.body.appendChild(arrowIcon)
 
-		backStartAreaScreenX = (startAreaUnit == "vw" ? visualViewport.width * startAreaNum / 100 : startAreaNum + startAreaUnit)
-		backEndAreaScreenX = (endAreaUnit == "vw" ? visualViewport.width * endAreaNum / 100 : endAreaNum + endAreaUnit)	// vw or px
+		backStartAreaScreenX = (startAreaUnit == "vw" ? visualViewport.width * startAreaNum / 100 : startAreaNum)
+		backEndAreaScreenX = (endAreaUnit == "vw" ? visualViewport.width * endAreaNum / 100 : endAreaNum)	// vw or px
 		// console.log(backStartAreaScreenX, backEndAreaScreenX)
 		// console.log(iconSizeNum, iconSizeUnit, iconPosNum, iconPosUnit, startAreaNum, startAreaUnit, endAreaNum, endAreaUnit)
 	}
@@ -157,7 +157,6 @@ var gestureExtension = (() => {
 			if (evt.changedTouches[0].pageX > (document.documentElement.scrollWidth - backEndAreaScreenX / visualViewport.scale)) {
 				// arrowIcon.style.left = String(document.documentElement.scrollWidth - (convertCurve((document.documentElement.scrollWidth - evt.touches[0].pageX) * visualViewport.scale / iconSizeNum) + 1) * iconSizeNum) + iconSizeUnit
 				arrowIcon.style.left = String(document.documentElement.scrollWidth - (convertCurve((document.documentElement.scrollWidth - evt.touches[0].pageX) * visualViewport.scale / iconSizeNum) + 1) * iconSizeNum / visualViewport.scale) + iconSizeUnit
-				console.log(document.documentElement.scrollWidth - (convertCurve((document.documentElement.scrollWidth - evt.touches[0].pageX) * visualViewport.scale / iconSizeNum) + 1) * iconSizeNum / visualViewport.scale)
 				arrowIcon.style.display = ""
 				arrowIcon.src = white
 				swipedForwardEnough = false

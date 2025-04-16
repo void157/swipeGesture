@@ -1,26 +1,38 @@
-const icon = document.getElementById("icon");
+const arrowIcon = document.getElementById("icon");
+// const arrow = document.getElementById("icon_arrow");
 const form0 = document.getElementById("form0")
 
-form0.addEventListener("reset", function(){
-	icon.style.width = "8vw"
-	icon.style.top = "50vh"
-	startArea.style.width = "5vw"
-	endArea.style.width = "76vw"
-	iconPosRange.max = 100
-	endAreaRange.max = 100
-})
+// function resetIcon(){
+// 	arrow.setAttribute("fill", "#fff")
+// 	arrowIcon.style.top = String(visualViewport.offsetTop + visualViewport.height * iconPos) + "px"
+// 	arrowIcon.style.width = String(iconSize / visualViewport.scale) + "px"
+// 	arrowIcon.style.left = "0px"
+// 	arrowIcon.style.display = ""
+// 	arrowIcon.style.scale = 1
+// }
+
+// form0.addEventListener("reset", function(){
+// 	arrowIcon.style.width = "8vw"
+// 	arrowIcon.style.top = "50vh"
+// 	startArea.style.width = "5vw"
+// 	endArea.style.width = "76vw"
+// 	iconPosRange.max = 100
+// 	endAreaRange.max = 100
+// })
 
 const iconPosRange = document.getElementById("icon_position_range");
 const iconPosNum = document.getElementById("icon_position_num")
 const iconPosUnit = document.getElementById("icon_position_unit")
 
 function setIconPosNum(){
-	icon.style.top = iconPosRange.value + (iconPosUnit.selectedIndex === 0 ? "vh" : "px")
+	arrowIcon.style.top = iconPosRange.value + (iconPosUnit.selectedIndex === 0 ? "vh" : "px")
 	iconPosNum.value = iconPosRange.value
+	// resetIcon()
 }
 function setIconPosRange(){
-	icon.style.top = iconPosNum.value + (iconPosUnit.selectedIndex === 0 ? "vh" : "px")
+	arrowIcon.style.top = iconPosNum.value + (iconPosUnit.selectedIndex === 0 ? "vh" : "px")
 	iconPosRange.value = iconPosNum.value
+	// resetIcon()
 }
 function setIconPosUnit(){
 	if (iconPosUnit.selectedIndex === 0) {
@@ -37,7 +49,7 @@ function setIconPosUnit(){
 		iconPosRange.value = visualViewport.height * iconPosRange.value / 100
 		// iconPosRange.min = 0
 	}
-	// icon.style.top = iconPosNum.value + (iconPosUnit.selectedIndex === 0 ? "vh" : "px")
+	// arrowIcon.style.top = iconPosNum.value + (iconPosUnit.selectedIndex === 0 ? "vh" : "px")
 }
 iconPosRange.addEventListener("input", setIconPosNum)
 iconPosNum.addEventListener("input", setIconPosRange)
@@ -48,13 +60,15 @@ const iconSizeNum = document.getElementById("icon_size_num");
 const iconSizeUnit = document.getElementById("icon_size_unit");
 
 iconSizeNum.addEventListener("input", function(){
-	icon.style.width = iconSizeNum.value + (iconSizeUnit.selectedIndex === 0 ? "vw" : "px")
+	arrowIcon.style.width = iconSizeNum.value + (iconSizeUnit.selectedIndex === 0 ? "vw" : "px")
 	iconSizeRange.value = iconSizeNum.value
+	// resetIcon()
 })
 
 iconSizeRange.addEventListener("input", function(){
-	icon.style.width = iconSizeRange.value + (iconSizeUnit.selectedIndex === 0 ? "vw" : "px")
+	arrowIcon.style.width = iconSizeRange.value + (iconSizeUnit.selectedIndex === 0 ? "vw" : "px")
 	iconSizeNum.value = iconSizeRange.value
+	// resetIcon()
 })
 
 iconSizeUnit.addEventListener("change", function(){
@@ -72,7 +86,7 @@ iconSizeUnit.addEventListener("change", function(){
 		iconSizeRange.value = visualViewport.width * iconSizeRange.value / 100
 		// iconSizeRange.min = 0
 	}
-	// icon.style.top = iconSizeNum.value + (iconSizeUnit.selectedIndex === 0 ? "vh" : "px")
+	// arrowIcon.style.top = iconSizeNum.value + (iconSizeUnit.selectedIndex === 0 ? "vh" : "px")
 })
 
 const startAreaRange = document.getElementById("start_area_range")
@@ -234,7 +248,7 @@ function restoreOptions() {
 		iconPosNum.value = result.iconPosNum || 50
 		iconPosRange.value = iconPosNum.value
 		iconPosUnit.selectedIndex = result.iconPosUnit || 0
-		icon.style.top = iconPosNum.value + (iconPosUnit.selectedIndex === 0 ? "vh" : "px")
+		arrowIcon.style.top = iconPosNum.value + (iconPosUnit.selectedIndex === 0 ? "vh" : "px")
 
 
 		if (result.iconSizeUnit === 0) {
@@ -247,7 +261,7 @@ function restoreOptions() {
 		iconSizeNum.value = result.iconSizeNum || 8
 		iconSizeRange.value = iconSizeNum.value
 		iconSizeUnit.selectedIndex = result.iconSizeUnit || 0
-		icon.style.width = iconSizeNum.value + (iconSizeUnit.selectedIndex === 0 ? "vw" : "px")
+		arrowIcon.style.width = iconSizeNum.value + (iconSizeUnit.selectedIndex === 0 ? "vw" : "px")
 
 
 		if (result.startAreaUnit === 0) {
@@ -284,3 +298,4 @@ function restoreOptions() {
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
 document.querySelector("form").addEventListener("submit", saveOptions);
+document.querySelector("form").addEventListener("reset", restoreOptions);
