@@ -241,9 +241,11 @@ function restoreOptions() {
 		if (result.iconPosUnit === 0) {
 			// %
 			iconPosRange.max = 100
+			iconPosNum.max = 100
 		} else {
 			// px
 			iconPosRange.max = visualViewport.height
+			iconPosNum.max = visualViewport.height
 		}
 		iconPosNum.value = result.iconPosNum || 50
 		iconPosRange.value = iconPosNum.value
@@ -267,9 +269,11 @@ function restoreOptions() {
 		if (result.startAreaUnit === 0) {
 			// %
 			startAreaRange.max = 50
+			startAreaNum.max = 50
 		} else {
 			// px
 			startAreaRange.max = visualViewport.width / 2
+			startAreaNum.max = visualViewport.width / 2
 		}
 		startAreaNum.value = result.startAreaNum || 5
 		startAreaRange.value = startAreaNum.value
@@ -280,14 +284,16 @@ function restoreOptions() {
 		if (result.endAreaUnit === 0) {
 			// %
 			endAreaRange.max = 100
+			endAreaNum.max = 100
 		} else {
 			// px
 			endAreaRange.max = visualViewport.width
+			endAreaNum.max = visualViewport.width
 		}
 		endAreaNum.value = result.endAreaNum || 76
 		endAreaRange.value = endAreaNum.value
 		endAreaUnit.selectedIndex = result.endAreaUnit || 0
-		endArea.style.width = (100 - endAreaNum.value) + "vw"
+		endArea.style.width = (endAreaRange.max - endAreaRange.value) + (endAreaUnit.selectedIndex === 0 ? "vw" : "px")
 	}
 	function onError(error) {
 		console.log(`Error: ${error}`);
