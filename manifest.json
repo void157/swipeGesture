@@ -22,10 +22,6 @@
 	}
 	],
 
-	"background": {
-		"scripts": ["content_scripts/background.js"]
-	},
-
 	"options_ui": {
 		"page": "content_scripts/options.html",
 		"browser_style": true,
