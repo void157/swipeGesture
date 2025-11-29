@@ -29,7 +29,7 @@
 	},
 
 	"browser_action": {
-		"default_icon": "icons/arrow.svg",
+		"default_icon": "icons/arrow_p.png",
 		"default_title": "swipeGesture",
 		"default_popup": "content_scripts/options.html"
 	},
@@ -38,5 +38,7 @@
 		"gecko": {
 			"id": "{44c0c123-6476-4a06-b8bc-4563654f248b}"
 		}
-	}
+	},
+
+	"default_locale": "en"
 }
