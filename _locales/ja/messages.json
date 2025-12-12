@@ -1,0 +1,38 @@
+{
+    "pageTitle": {
+        "message": "設定",
+        "description": "設定ページのタイトル"
+    },
+    "Icon": {
+        "message": "アイコン",
+        "description": "アイコン"
+    },
+    "Size": {
+        "message": "サイズ",
+        "description": "サイズ"
+    },
+    "yPosition": {
+        "message": "y座標",
+        "description": "y座標"
+    },
+    "activeArea": {
+        "message": "スワイプ領域",
+        "description": "active area"
+    },
+    "swipeStartArea": {
+        "message": "開始位置",
+        "description": "swipe start area"
+    },
+    "swipeEndArea": {
+        "message": "終了位置",
+        "description": "swipe end area"
+    },
+    "saveButton": {
+        "message": "保存",
+        "description": "保存ボタン"
+    },
+    "resetButton": {
+        "message": "リセット",
+        "description": "リセットボタン"
+    }
+}

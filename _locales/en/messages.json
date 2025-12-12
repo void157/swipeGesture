@@ -1,0 +1,38 @@
+{
+    "pageTitle": {
+        "message": "Settings",
+        "description": "The title of the settings page"
+    },
+    "Icon": {
+        "message": "Icon",
+        "description": "icon"
+    },
+    "Size": {
+        "message": "Size",
+        "description": "size"
+    },
+    "yPosition": {
+        "message": "y position",
+        "description": "y position"
+    },
+    "activeArea": {
+        "message": "Active area",
+        "description": "active area"
+    },
+    "swipeStartArea": {
+        "message": "Swipe start area",
+        "description": "swipe start area"
+    },
+    "swipeEndArea": {
+        "message": "Swipe end area",
+        "description": "swipe end area"
+    },
+    "saveButton": {
+        "message": "Save",
+        "description": "save button"
+    },
+    "resetButton": {
+        "message": "Reset",
+        "description": "reset button"
+    }
+}
